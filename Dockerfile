@@ -1,22 +1,26 @@
 FROM php:8.2-apache
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libpng-dev libonig-dev libxml2-dev zip unzip git curl \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Install Composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
+
+# Copy source code
+COPY . /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy app source code
-COPY . /var/www/html
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Change ownership
-RUN chown -R www-data:www-data /var/www/html
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Update Apache site config to use public folder
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
-# Allow .htaccess override
-RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+EXPOSE 80
