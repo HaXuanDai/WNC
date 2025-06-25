@@ -14,7 +14,7 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        sync: false
+        value: base64:xxxxxx
       - key: APP_DEBUG
         value: false
       - key: APP_URL
