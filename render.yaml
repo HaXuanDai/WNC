@@ -1,0 +1,62 @@
+services:
+  - type: web
+    name: laravel-app
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: "apache2-foreground"
+    autoDeploy: true
+    envVars:
+      - key: APP_NAME
+        value: Laravel
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        sync: false
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://your-app-name.onrender.com
+
+      - key: APP_LOCALE
+        value: en
+      - key: APP_FALLBACK_LOCALE
+        value: en
+      - key: APP_TIMEZONE
+        value: Asia/Ho_Chi_Minh
+
+      # Database
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: your-db-hostname
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        value: your-db-name
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+
+      # Cache / Session / Queue
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: CACHE_STORE
+        value: file
+
+      # Mail
+      - key: MAIL_MAILER
+        value: log
+      - key: MAIL_FROM_ADDRESS
+        value: hello@example.com
+      - key: MAIL_FROM_NAME
+        value: Laravel
+
+      # Vite frontend (nếu dùng)
+      - key: VITE_APP_NAME
+        value: Laravel
