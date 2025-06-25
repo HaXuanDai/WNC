@@ -19,8 +19,8 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: laravel-pma
     environment:
-      - PMA_HOST=mysql-wnc-myqsl-wnc.l.aivencloud.com
-      - PMA_PORT=17592
+      - PMA_HOST=financial-management-camlee05.l.aivencloud.com
+      - PMA_PORT=12284
       - PMA_USER=avnadmin
     ports:
       - "8080:80"
